@@ -2,6 +2,7 @@ package ProjectOne;
 
 import java.sql.*;
 import java.util.Scanner;
+import java.util.NoSuchElementException;
 
 public class ProjectOne {
     public void createTable() {
@@ -45,9 +46,11 @@ public class ProjectOne {
                         templateToEnterUsersData.setString(4, location);
                         templateToEnterUsersData.setString(5, designation);
 
+                        templateToEnterUsersData.execute();
+
                         numberOfTimesToIterate++;
 
-                    } while (numberOfTimesToIterate <= 10);
+                    } while (numberOfTimesToIterate < 10);
                 }
             }
         } catch (SQLException e) {
@@ -57,11 +60,18 @@ public class ProjectOne {
         return numberOfTimesToIterate;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchElementException{
 
-        ProjectOne inTheDatabase = new ProjectOne();
-        inTheDatabase.createTable();
-        inTheDatabase.populateTable();
+        try{
 
+            ProjectOne inTheDatabase = new ProjectOne();
+            inTheDatabase.createTable();
+
+            int iteration = inTheDatabase.populateTable();
+            System.out.println(iteration);
+
+        } catch (NoSuchElementException e){
+            System.out.println("The error message here is " + e.getMessage());
+        }
     }
 }
